@@ -6,7 +6,7 @@ import { ChangeEvent } from "react";
 export default function Settings() {
   const store = useStore();
 
-  const src = `http://127.0.0.1:8090/api/files/${store.item?.collectionId}/${store.item?.id}/${store.item?.image}`;
+  const src = `http://mistral.mak-net.net/api/files/${store.item?.collectionId}/${store.item?.id}/${store.item?.image}`;
   const thumbnail = `${src}?thumb=200x200`;
 
   const changePosition = (evt: ChangeEvent<HTMLInputElement>) => {

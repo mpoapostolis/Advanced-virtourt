@@ -1,4 +1,5 @@
 import { Euler, Vector3 } from "three";
+export interface Expand {}
 
 export interface ItemType {
   collectionId: string;
