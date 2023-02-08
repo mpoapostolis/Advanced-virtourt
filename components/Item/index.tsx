@@ -11,7 +11,7 @@ export function Item(props: ItemType) {
   const router = useRouter();
   const store = useStore();
   const ref = useRef<Mesh>(null);
-  const src = `http://mistral.mak-net.net/api/files/${props.collectionId}/${props.id}/${props.image}`;
+  const src = `/statics/api/files/${props.collectionId}/${props.id}/${props.image}`;
 
   const texture = useTexture(src ?? "/images/empty.png");
   const aspect = texture.image.width / texture.image.height;
