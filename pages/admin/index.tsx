@@ -1,6 +1,6 @@
 import { Item } from "@/components/Item";
 import Settings from "@/components/Settings";
-import type { ItemType } from "@/store";
+import { useItems } from "@/lib/items/queries";
 import { useStore } from "@/store";
 import {
   Environment,
@@ -8,23 +8,24 @@ import {
   PerspectiveCamera,
   useTexture,
 } from "@react-three/drei";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { useRouter } from "next/router";
 import { useRef } from "react";
-import { BackSide, Euler, Mesh, Vector3 } from "three";
+import { BackSide, Mesh } from "three";
 
 const MIN_DISTANCE = 5e-150;
 
-function Helper({ onChange }: { onChange: (position: Vector3) => void }) {
+function Helper() {
   const ref = useRef<Mesh>(null);
   const router = useRouter();
+  const store = useStore();
   useFrame((t) => {
     if (!ref.current || !router.query.selected || !router.query.dragging)
       return;
     const [intersect] = t.raycaster.intersectObject(ref.current, true);
-    if (intersect) onChange(intersect.point);
+    if (intersect && router.query.selected)
+      store.setItem({ position: intersect.point });
   });
-  const t = useThree();
 
   return (
     <group>
@@ -38,7 +39,6 @@ function Helper({ onChange }: { onChange: (position: Vector3) => void }) {
 
 function Scene() {
   const texture = useTexture(`/scenes/scene1.png`);
-  console.log([process.env.PB_ADMIN_EMAIL, process.env.PB_ADMIN_PASSWORD]);
 
   return (
     <Environment background resolution={1920}>
@@ -50,22 +50,12 @@ function Scene() {
   );
 }
 
-const dummyItem: ItemType[] = [
-  {
-    id: "1",
-    name: "Item 1",
-    position: new Vector3(0, 0, -25),
-    rotation: new Euler(0, 0, 0),
-    scale: 1,
-    src: "/images/panel1.jpg",
-    thumbnail: "/images/panel1.jpg",
-  },
-];
-
 export default function Admin() {
   const router = useRouter();
   const selected = router.query.selected;
   const store = useStore();
+
+  const { data: items } = useItems();
 
   return (
     <div className="relative flex   h-screen  w-screen bg-black">
@@ -75,17 +65,10 @@ export default function Admin() {
         <PerspectiveCamera makeDefault position={[0, 0, MIN_DISTANCE]} />
         <OrbitControls />
 
-        {dummyItem.map((item) => (
+        {items.map((item) => (
           <Item key={item.id} {...item} />
         ))}
-        <Helper
-          onChange={(position: Vector3) => {
-            if (!selected) return;
-            store.setItem({
-              position,
-            });
-          }}
-        />
+        <Helper />
       </Canvas>
       <Settings />
     </div>

@@ -1,8 +1,13 @@
 import { useStore } from "@/store";
+import axios from "axios";
+import { useRouter } from "next/router";
 import { ChangeEvent } from "react";
 
 export default function Settings() {
   const store = useStore();
+
+  const src = `http://127.0.0.1:8090/api/files/${store.item?.collectionId}/${store.item?.id}/${store.item?.image}`;
+  const thumbnail = `${src}?thumb=200x200`;
 
   const changePosition = (evt: ChangeEvent<HTMLInputElement>) => {
     const num = Number(evt.target.value);
@@ -25,7 +30,7 @@ export default function Settings() {
     if (axis === "z") rot.set(rot.x, rot.y, num);
     store.setItem({ rotation: rot });
   };
-
+  const router = useRouter();
   return (
     <div className="fixed right-0 top-0 h-screen w-96 bg-black  bg-opacity-80 p-4">
       <div className="grid grid-cols-[1fr_2fr] gap-x-4">
@@ -33,7 +38,9 @@ export default function Settings() {
           <button className="absolute left-0  top-0 grid h-full w-full place-items-center  bg-black bg-opacity-80 opacity-0 hover:opacity-100">
             Change
           </button>
-          <img className="h-full w-fit border" src={store.item?.src} alt="" />
+          {store.item?.id && (
+            <img className="h-full w-fit border" src={thumbnail} alt="" />
+          )}
         </div>
         <div>
           <label className="label">Name</label>
@@ -126,6 +133,25 @@ export default function Settings() {
         type="range"
         className="range range-xs"
       />
+
+      <div className="divider"></div>
+      <button
+        onClick={() => {
+          const rotation = {
+            x: store.item?.rotation?.x,
+            y: store.item?.rotation?.y,
+            z: store.item?.rotation?.z,
+            order: store.item?.rotation?.order,
+          };
+          axios.put(`/api/items/${router.query.selected}`, {
+            ...store.item,
+            rotation,
+          });
+        }}
+        className="btn w-full"
+      >
+        Save
+      </button>
     </div>
   );
 }

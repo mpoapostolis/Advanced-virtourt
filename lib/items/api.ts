@@ -1,16 +1,30 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { getPocketBase } from "../pocketBase";
 
 export async function getItems(req: NextApiRequest, res: NextApiResponse) {
-  // await pb.admins.authWithPassword(
-  //   process.env.PB_ADMIN_EMAIL ?? "",
-  //   process.env.PB_ADMIN_PASSWORD ?? ""
-  // );
+  const pb = await getPocketBase();
+  const records = await pb
+    .collection("items")
+    .getFullList(200 /* batch size */, {
+      sort: "-created",
+    });
 
-  // const records = await pb
-  //   .collection("items")
-  //   .getFullList(200 /* batch size */, {
-  //     sort: "-created",
-  //   });
-  // res.statusCode = 200;
-  res.json([]);
+  res.status(200).json(records);
+}
+
+export async function getItemByid(req: NextApiRequest, res: NextApiResponse) {
+  const pb = await getPocketBase();
+  const records = await pb.collection("items").getOne(req.query.id as string);
+
+  res.status(200).json(records);
+}
+
+export async function updateItem(req: NextApiRequest, res: NextApiResponse) {
+  const pb = await getPocketBase();
+  const records = await pb.collection("items").update(req.query.id as string, {
+    ...req.body,
+    updated: new Date(),
+  });
+
+  res.status(200).json(records);
 }

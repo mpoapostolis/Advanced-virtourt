@@ -6,5 +6,5 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  getItems(req, res);
+  return getItems(req, res);
 }

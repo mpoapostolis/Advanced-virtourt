@@ -1,18 +1,4 @@
-export interface Position {
-  x: number;
-  y: number;
-  z: number;
-}
-
-export interface Rotation {
-  isEuler: boolean;
-  _x: number;
-  _y: number;
-  _z: number;
-  _order: string;
-}
-
-export interface Expand {}
+import { Euler, Vector3 } from "three";
 
 export interface ItemType {
   collectionId: string;
@@ -21,8 +7,8 @@ export interface ItemType {
   id: string;
   image: string;
   name: string;
-  position: Position;
-  rotation: Rotation;
+  position: Vector3;
+  rotation: Euler;
   scale: number;
   updated: string;
   expand: Expand;
