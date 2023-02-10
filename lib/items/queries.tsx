@@ -1,4 +1,4 @@
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { fetcher } from "../fetcher";
@@ -24,4 +24,9 @@ export function useItem() {
     isLoading: !error && !data,
     isError: error,
   };
+}
+
+export async function updateItem(item: Partial<ItemType>) {
+  const { id } = item;
+  return await axios.put(`/api/items/${id}`, item);
 }

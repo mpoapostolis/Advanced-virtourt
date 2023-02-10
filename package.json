@@ -16,6 +16,7 @@
     "clsx": "^1.2.1",
     "daisyui": "^2.50.0",
     "framer-motion": "^9.0.2",
+    "leva": "^0.9.34",
     "next": "13.1.6",
     "pocketbase": "^0.10.1",
     "query-string": "^8.1.0",

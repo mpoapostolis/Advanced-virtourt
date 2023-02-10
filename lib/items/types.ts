@@ -4,6 +4,7 @@ export interface Expand {}
 export interface ItemType {
   collectionId: string;
   collectionName: string;
+  description: string;
   created: string;
   id: string;
   image: string;
