@@ -1,61 +1,70 @@
 import { ItemType } from "@/lib/items/types";
+import { Arr3, createE3, createV3, setToLeva } from "@/lib/leva";
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { levaStore } from "leva";
-import { useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 import { DoubleSide, Euler, Mesh, Vector3 } from "three";
-type V = [number, number, number];
 
 export const Item = function Item(props: ItemType) {
-  const src = `/statics/api/files/${props.collectionId}/${props.id}/${props.image}`;
-  const texture = useTexture(src ?? "/images/empty.png");
+  const texture = useTexture(props.src ?? "/images/empty.png");
   const aspect = texture.image.width / texture.image.height;
   const ref = useRef<Mesh>(null);
-  const createV3 = (e: V) => new Vector3(...e);
-  const createE3 = (v: V) => new Euler(...v.map((e) => (e * Math.PI) / 180));
+  const transformRef = useRef<any>(null);
+  const router = useRouter();
+  const [dragging, setDragging] = useState(false);
+
+  const id = levaStore.get("id") as string;
+  const position = levaStore.get("position") as Arr3;
+  const rotation = levaStore.get("rotation") as Arr3;
+  const _scale = levaStore.get("scale") as number;
+  const v3 = createV3(position);
+  const e3 = createE3(rotation);
+
+  const scale = new Vector3(_scale, _scale, _scale);
+  const isSelected = id === props.id;
+
+  useFrame((t) => {
+    if (!ref.current) return;
+    if (dragging) {
+      t.raycaster.setFromCamera(t.mouse, t.camera);
+      const direction = t.raycaster.ray.direction;
+      const v3 = t.camera.position
+        .clone()
+        .add(direction.clone().multiplyScalar(50));
+      ref.current.position.copy(v3);
+    } else if (isSelected) {
+      ref.current.position.copy(v3);
+      ref.current.rotation.copy(e3);
+      ref.current.scale.copy(scale);
+    }
+  });
 
   useEffect(() => {
-    if (!ref) return;
+    if (!ref.current) return;
+    const scale = new Vector3(props.scale, props.scale, props.scale);
     const e3 = new Euler().copy(props.rotation);
-    const rotation = createE3([e3.x, e3.y, e3.z]);
-    ref.current?.position.copy(props.position);
-    ref.current?.rotation.copy(rotation);
-    ref.current?.scale.copy(new Vector3(props.scale, props.scale, props.scale));
+    const rot = createE3([e3.x, e3.y, e3.z]);
+    ref.current.position.copy(props.position);
+    ref.current.rotation.copy(rot);
+    ref.current.scale.copy(scale);
   }, [props]);
-
-  const id = levaStore.get("id");
-  const position = createV3(levaStore.get("position"));
-  const rotation = createE3(levaStore.get("rotation"));
-  const vissible = levaStore.get("vissible");
-  const _scale = levaStore.get("scale");
-  const scale = new Vector3(_scale, _scale, _scale);
-
-  useFrame(() => {
-    if (!ref || id !== props.id) return;
-    ref.current?.position.copy(position);
-    ref.current?.rotation.copy(rotation);
-    ref.current?.scale.copy(scale);
-  });
 
   return (
     <mesh
-      visible={vissible}
-      onClick={() => {
-        if (props.id === id) return;
-        const e3 = new Euler().copy(props.rotation);
-        levaStore.set(
-          {
-            id: props.id,
-            name: props.name,
-            description: props.description,
-            position: [props.position.x, props.position.y, props.position.z],
-            rotation: [e3.x, e3.y, e3.z],
-            scale: props.scale,
-          },
-          true
-        );
-      }}
       ref={ref}
+      onDoubleClick={() => {
+        setDragging(!dragging);
+        console.log(ref.current?.position);
+        const pos = ref.current?.position;
+        levaStore.set({ position: [pos?.x, pos?.y, pos?.z] }, true);
+      }}
+      onClick={() => {
+        if (isSelected || dragging) return;
+
+        setToLeva(props);
+      }}
     >
       <boxGeometry args={[10 * aspect, 10, 0.5]} />
       <meshBasicMaterial side={DoubleSide} attach="material" map={texture} />

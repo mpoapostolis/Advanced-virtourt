@@ -7,9 +7,17 @@ export async function getItems(req: NextApiRequest, res: NextApiResponse) {
     .collection("items")
     .getFullList(200 /* batch size */, {
       sort: "-created",
+      filter: `scene_id='${req.query.sId}'`,
     });
 
-  res.status(200).json(records);
+  const data = records.map((record) => {
+    return {
+      ...record,
+      src: `${process.env.PB_URL}/api/files/${record.collectionId}/${record.id}/${record.image}`,
+    };
+  });
+
+  res.status(200).json(data);
 }
 
 export async function getItemByid(req: NextApiRequest, res: NextApiResponse) {

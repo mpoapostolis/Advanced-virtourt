@@ -5,7 +5,13 @@ import { fetcher } from "../fetcher";
 import { ItemType } from "./types";
 
 export function useItems() {
-  const { data, error } = useSWR<ItemType[], AxiosError>(`/api/items`, fetcher);
+  const router = useRouter();
+  const { pId, sId } = router.query;
+  const { data, error } = useSWR<ItemType[], AxiosError>(
+    `/api/items?pId=${pId}&sId=${sId}`,
+    fetcher
+  );
+
   return {
     data: data ?? [],
     isLoading: !error && !data,
@@ -16,7 +22,7 @@ export function useItems() {
 export function useItem() {
   const router = useRouter();
   const { data, error } = useSWR<ItemType, AxiosError>(
-    router.query.selected && `/api/items/${router.query.selected}`,
+    router.query.item && `/api/items/${router.query.item}`,
     fetcher
   );
   return {
