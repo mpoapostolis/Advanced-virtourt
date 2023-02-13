@@ -13,4 +13,6 @@ export interface ItemType {
   updated: string;
   expand: Expand;
   vissible: boolean;
+  onClick: string;
+  goToScene: string;
 }

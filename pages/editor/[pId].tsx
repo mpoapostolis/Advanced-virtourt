@@ -1,5 +1,4 @@
 import { Item } from "@/components/Item";
-import Settings from "@/components/Settings";
 import { useLeva } from "@/Hooks/useLeva";
 import { useItems } from "@/lib/items/queries";
 import { useScenes } from "@/lib/scenes/queries";
@@ -10,6 +9,7 @@ import {
   useTexture,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { Leva } from "leva";
 import { useRouter } from "next/router";
 import { BackSide } from "three";
 
@@ -37,22 +37,31 @@ export default function Admin() {
 
   return (
     <div className="relative  h-screen  w-screen ">
-      <div className="grid grid-cols-[15vw_1fr]">
-        <Settings />
-        <Canvas className="pointer-events-none select-none">
-          <Scene src={scene?.src ?? "/images/empty.png"} />
-          {/* <pointLight position={[0, -80, 0]} /> */}
-          <PerspectiveCamera
-            fov={70}
-            makeDefault
-            position={[0, 0, MIN_DISTANCE]}
-          />
-          <OrbitControls makeDefault />
-          {items.map((item) => (
-            <Item key={item.id} {...item} />
-          ))}
-        </Canvas>
-      </div>
+      <Canvas className="pointer-events-none select-none">
+        <Scene src={scene?.src ?? "/images/empty.png"} />
+        <PerspectiveCamera
+          fov={70}
+          makeDefault
+          position={[0, 0, MIN_DISTANCE]}
+        />
+        <OrbitControls makeDefault />
+        {items.map((item) => (
+          <Item key={item.id} {...item} />
+        ))}
+      </Canvas>
+      <Leva
+        theme={{
+          space: {
+            rowGap: "5px",
+          },
+          sizes: {
+            rootWidth: "20vw",
+          },
+        }}
+        // fill // default = false,  true makes the pane fill the parent dom node it's rendered in
+        flat // default = false,  true removes border radius and shadow
+        oneLineLabels // default = false, alternative layout for labels, with labels and fields on separate rows
+      />
     </div>
   );
 }

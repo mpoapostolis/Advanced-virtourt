@@ -1,9 +1,8 @@
 import { ItemType } from "@/lib/items/types";
-import { Arr3, createE3, createV3, setToLeva } from "@/lib/leva";
+import { Arr3, createE3, createV3 } from "@/lib/leva";
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { levaStore } from "leva";
-import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { DoubleSide, Euler, Mesh, Vector3 } from "three";
 
@@ -11,11 +10,10 @@ export const Item = function Item(props: ItemType) {
   const texture = useTexture(props.src ?? "/images/empty.png");
   const aspect = texture.image.width / texture.image.height;
   const ref = useRef<Mesh>(null);
-  const transformRef = useRef<any>(null);
-  const router = useRouter();
+
   const [dragging, setDragging] = useState(false);
 
-  const id = levaStore.get("id") as string;
+  const id = levaStore.get("item") as string;
   const position = levaStore.get("position") as Arr3;
   const rotation = levaStore.get("rotation") as Arr3;
   const _scale = levaStore.get("scale") as number;
@@ -49,21 +47,26 @@ export const Item = function Item(props: ItemType) {
     ref.current.position.copy(props.position);
     ref.current.rotation.copy(rot);
     ref.current.scale.copy(scale);
-  }, [props]);
+  }, []);
 
   return (
     <mesh
       ref={ref}
       onDoubleClick={() => {
         setDragging(!dragging);
-        console.log(ref.current?.position);
         const pos = ref.current?.position;
-        levaStore.set({ position: [pos?.x, pos?.y, pos?.z] }, true);
+        const rot = ref.current?.rotation;
+        levaStore.set(
+          {
+            ...props,
+            item: props.id,
+            position: [pos?.x, pos?.y, pos?.z],
+          },
+          true
+        );
       }}
       onClick={() => {
-        if (isSelected || dragging) return;
-
-        setToLeva(props);
+        if (dragging) return;
       }}
     >
       <boxGeometry args={[10 * aspect, 10, 0.5]} />

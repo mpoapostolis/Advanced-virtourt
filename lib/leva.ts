@@ -13,13 +13,14 @@ export function setToLeva(props: ItemType) {
   const rot = new Euler().copy(props.rotation);
   levaStore.set(
     {
-      id: props.id,
-      name: props.name,
+      item: props.id,
       description: props.description,
       position: props.position,
       rotation: [rot.x, rot.y, rot.z],
       scale: props.scale,
       vissible: props.vissible,
+      goToScene: props.goToScene,
+      onClick: props.onClick,
     },
     true
   );

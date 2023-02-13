@@ -1,53 +1,176 @@
 import useMutation from "@/Hooks/useMutation";
-import { updateItem, useItem } from "@/lib/items/queries";
-import { button, useControls } from "leva";
+import { updateItem, useItems } from "@/lib/items/queries";
+import { setToLeva } from "@/lib/leva";
+import { useScenes } from "@/lib/scenes/queries";
+import { button, levaStore, useControls } from "leva";
+import { useRouter } from "next/router";
 import { Euler, Vector3 } from "three";
 
 export function useLeva() {
-  const [save] = useMutation(updateItem, ["/api/items"]);
-  const { data: item } = useItem();
+  const router = useRouter();
+  const { pId, sId, item } = router.query;
+  const [save] = useMutation(updateItem, [`/api/items?pId=${pId}&sId=${sId}`]);
+  const { data: items } = useItems();
+  const { data: scenes } = useScenes();
 
-  const [] = useControls(() => ({
-    id: { label: "id", value: "", editable: false },
-    name: { label: "Name", value: "" },
-    description: { label: "Description", value: "", rows: 3 },
-
-    position: {
-      value: [0, 0, 0],
-      step: 0.05,
-    },
-    rotation: {
-      value: [0, 0, 0],
-      step: 1,
-    },
-    scale: {
-      value: 1,
-      step: 0.001,
-      max: 5,
-
-      min: 0.1,
-    },
-    vissible: {
-      value: true,
-    },
-    save: button(async (get) => {
-      const id = get("id");
-      const scale = get("scale");
-      const pos = get("position");
-      const rot = get("rotation");
-      const [x, y, z] = pos;
-      const [rx, ry, rz] = rot;
-      const rotation = new Euler(rx, ry, rz);
-      const position = new Vector3(x, y, z);
-
-      save({
-        ...item,
-        id,
-        rotation,
-        position,
-        scale,
-      });
+  const objScene = scenes.reduce(
+    (acc, cur) => ({
+      ...acc,
+      [cur.name]: cur.id,
     }),
-  }));
+    {}
+  );
+
+  const objGoTo = scenes.reduce(
+    (acc, cur) => ({
+      ...acc,
+      [`Go to ${cur.name}`]: cur.id,
+    }),
+    {}
+  );
+
+  const objItem = items.reduce(
+    (acc, cur) => ({
+      ...acc,
+      [cur.name]: cur.id,
+    }),
+    {}
+  );
+
+  const replace = (obj: { [key: string]: string }) => {
+    if (!router.query.pId) return;
+    router.replace({
+      query: {
+        ...router.query,
+        ...obj,
+      },
+    });
+  };
+
+  const defaultValues = {
+    name: "",
+    description: "",
+    position: [0, 0, 0],
+    rotation: [0, 0, 0],
+    scale: [1, 1, 1],
+    item: "",
+    goToScene: "",
+    onClick: "",
+  };
+
+  useControls(
+    {
+      scene: {
+        options: objScene,
+        value: "",
+        onChange: (value) => {
+          levaStore.set(defaultValues, true);
+          if (value) replace({ sId: value, item: "" });
+        },
+      },
+    },
+    [scenes]
+  );
+
+  useControls(
+    {
+      item: {
+        options: objItem,
+        value: "",
+        onChange: (value) => {
+          replace({ item: value });
+          const item = items.find((i) => i.id === value);
+          if (item) setToLeva(item);
+        },
+      },
+    },
+    [items]
+  );
+
+  useControls(
+    {
+      description: {
+        label: "Description",
+        value: "",
+        rows: 3,
+        disabled: !item,
+      },
+      position: {
+        collapsed: true,
+        value: [0, 0, 0],
+        step: 0.05,
+        disabled: !item,
+      },
+      rotation: {
+        value: [0, 0, 0],
+        step: 1,
+        disabled: !item,
+      },
+      scale: {
+        value: 1,
+        step: 0.001,
+        max: 5,
+        min: 0.1,
+        disabled: !item,
+      },
+      goToScene: {
+        label: "Go to scene",
+        options: {
+          None: "",
+          ...objGoTo,
+        },
+        value: "",
+        disabled: !item,
+      },
+      onClick: {
+        label: "On click",
+
+        options: {
+          None: "",
+          "Show image modal": "showImage",
+          "Show description": "showDescription",
+        },
+        value: "",
+        disabled: !item,
+      },
+    },
+    [item]
+  );
+
+  useControls(
+    () => ({
+      save: button(
+        async (get) => {
+          const id = get("item");
+          const scale = get("scale");
+          const pos = get("position");
+          const rot = get("rotation");
+          const goToScene = get("goToScene");
+          const onClick = get("onClick");
+          const description = get("description");
+          const [x, y, z] = pos;
+          const [rx, ry, rz] = rot;
+          const rotation = new Euler(rx, ry, rz);
+          const position = new Vector3(x, y, z);
+
+          save({
+            // ...item,
+            id,
+            description,
+            position,
+            rotation,
+            scale,
+            goToScene,
+            onClick,
+          });
+        },
+        {
+          disabled: !item || !sId,
+        }
+      ),
+    }),
+    [item, sId]
+  );
+
   return null;
 }
