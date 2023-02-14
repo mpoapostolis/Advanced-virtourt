@@ -10,6 +10,7 @@ import {
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Leva } from "leva";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { BackSide } from "three";
 
@@ -31,13 +32,27 @@ export default function Page() {
   const { data: items } = useItems();
   const router = useRouter();
   const { data: scenes } = useScenes();
-  const { sId } = router.query;
+  const { pId, sId } = router.query;
   const scene = scenes.find((s) => s.id === sId);
   useLeva();
 
   return (
     <div className="relative  h-screen  w-screen ">
-      <Canvas className="pointer-events-none select-none">
+      <Link
+        target="_blank"
+        href={`/${pId}/${sId}`}
+        className="btn fixed left-4 top-4 z-50 rounded capitalize"
+      >
+        preview
+        <picture>
+          <img
+            className="ml-2 h-4 w-4"
+            src="https://s2.svgbox.net/hero-outline.svg?ic=link&color=eee"
+            alt="link"
+          />
+        </picture>
+      </Link>
+      <Canvas className="pointer-events-none z-20 select-none">
         <Scene src={scene?.src ?? "/images/empty.png"} />
         <PerspectiveCamera
           fov={70}
