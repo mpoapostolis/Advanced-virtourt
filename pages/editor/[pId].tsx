@@ -27,7 +27,7 @@ function Scene(props: { src: string }) {
   );
 }
 
-export default function Admin() {
+export default function Page() {
   const { data: items } = useItems();
   const router = useRouter();
   const { data: scenes } = useScenes();

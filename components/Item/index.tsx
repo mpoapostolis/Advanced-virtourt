@@ -1,15 +1,15 @@
 import { ItemType } from "@/lib/items/types";
 import { Arr3, createE3, createV3 } from "@/lib/leva";
-import { useTexture } from "@react-three/drei";
+import { Html, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { levaStore } from "leva";
 import { useEffect, useRef, useState } from "react";
-import { DoubleSide, Euler, Mesh, Vector3 } from "three";
+import { DoubleSide, Euler, Group, Vector3 } from "three";
 
 export const Item = function Item(props: ItemType) {
   const texture = useTexture(props.src ?? "/images/empty.png");
   const aspect = texture.image.width / texture.image.height;
-  const ref = useRef<Mesh>(null);
+  const ref = useRef<Group>(null);
 
   const [dragging, setDragging] = useState(false);
 
@@ -50,7 +50,7 @@ export const Item = function Item(props: ItemType) {
   }, []);
 
   return (
-    <mesh
+    <group
       ref={ref}
       onDoubleClick={() => {
         setDragging(!dragging);
@@ -69,8 +69,19 @@ export const Item = function Item(props: ItemType) {
         if (dragging) return;
       }}
     >
-      <boxGeometry args={[10 * aspect, 10, 0.5]} />
-      <meshBasicMaterial side={DoubleSide} attach="material" map={texture} />
-    </mesh>
+      <mesh>
+        <boxGeometry args={[10 * aspect, 10, 0.5]} />
+        <meshBasicMaterial side={DoubleSide} attach="material" map={texture} />
+      </mesh>
+
+      <Html transform position={[0, -6.5, 0]}>
+        <div
+          className="btn h-fit w-fit p-4 uppercase leading-7"
+          dangerouslySetInnerHTML={{
+            __html: props.description,
+          }}
+        ></div>
+      </Html>
+    </group>
   );
 };
