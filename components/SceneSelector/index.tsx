@@ -8,7 +8,7 @@ export function SceneSelector() {
   const { data: items } = useItems();
   const router = useRouter();
   const { data: scenes } = useScenes();
-  const { scene, project } = router.query;
+  const { scene, pId } = router.query;
   return (
     <div className="fixed bottom-0 z-50 flex w-screen justify-center">
       <div className="  inline-block w-fit overflow-x-auto whitespace-nowrap rounded-t  bg-black pt-2 opacity-90  transition duration-200 ">
@@ -19,7 +19,7 @@ export function SceneSelector() {
               background: `url(${s?.src}?thumb=200x200) no-repeat`,
               backgroundSize: "100% 100%",
             }}
-            href={`/${project}/${s.id}`}
+            href={`/${pId}/${s.id}`}
             role="button"
             className={clsx(
               "pointer-events-auto relative z-50 mx-2  inline-block aspect-auto  h-16 w-20 bg-opacity-40",
