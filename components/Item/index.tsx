@@ -50,7 +50,6 @@ export const Item = function Item(props: ItemType) {
     ref.current.scale.copy(scale);
   }, []);
   const router = useRouter();
-  console.log(router.locale);
   const locale = router.locale ?? "el";
   const title = locale === "el" ? props.title_gr : props.title_en;
   const painter =
@@ -58,7 +57,7 @@ export const Item = function Item(props: ItemType) {
       ? props.expand.painter.name_gr
       : props.expand.painter.name_en;
 
-  const descScale = 1 / _scale;
+  const descScale = 1 / (router.query.item === props.id ? _scale : props.scale);
   return (
     <group
       ref={ref}
@@ -71,6 +70,7 @@ export const Item = function Item(props: ItemType) {
             ...props,
             item: props.id,
             position: [pos?.x, pos?.y, pos?.z],
+            rotation: [rot?.x, rot?.y, rot?.z],
           },
           true
         );

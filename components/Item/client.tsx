@@ -49,7 +49,7 @@ export const ClientItem = function Item(props: ItemType) {
       <Html
         scale={[descScale, descScale, descScale]}
         transform
-        position={[0, -6, 0]}
+        position={[0, -6 - descScale * 1.2, 0]}
       >
         <div className="flex h-fit w-fit flex-col bg-[#faf8f1]  p-4 uppercase leading-7 text-black duration-300 hover:scale-150">
           <div>{title}</div>
