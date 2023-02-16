@@ -32,7 +32,7 @@ export function useLeva() {
   const objItem = items.reduce(
     (acc, cur) => ({
       ...acc,
-      [cur.painter_gr]: cur.id,
+      [cur.title_gr]: cur.id,
     }),
     {}
   );
@@ -48,8 +48,15 @@ export function useLeva() {
   };
 
   const defaultValues = {
-    name: "",
-    description: "",
+    painter_gr: "",
+    painter_en: "",
+    material_gr: "",
+    material_en: "",
+    title_gr: "",
+    title_en: "",
+    painter_date: "",
+    painter_biography_gr: "",
+    painter_biography_en: "",
     position: [0, 0, 0],
     rotation: [0, 0, 0],
     scale: [1, 1, 1],
@@ -89,12 +96,6 @@ export function useLeva() {
 
   useControls(
     {
-      description: {
-        label: "Description",
-        value: "",
-        rows: 3,
-        disabled: !item,
-      },
       position: {
         collapsed: true,
         value: [0, 0, 0],
@@ -109,7 +110,7 @@ export function useLeva() {
       scale: {
         value: 1,
         step: 0.001,
-        max: 5,
+        max: 50,
         min: 0.1,
         disabled: !item,
       },
@@ -141,27 +142,23 @@ export function useLeva() {
     () => ({
       save: button(
         async (get) => {
-          const id = get("item");
           const scale = get("scale");
           const pos = get("position");
           const rot = get("rotation");
           const goToScene = get("goToScene");
           const onClick = get("onClick");
-          const description = get("description");
           const [x, y, z] = pos;
           const [rx, ry, rz] = rot;
           const rotation = new Euler(rx, ry, rz);
           const position = new Vector3(x, y, z);
 
           save({
-            // ...item,
-            // id,
-            // description,
-            // position,
-            // rotation,
-            // scale,
-            // goToScene,
-            // onClick,
+            id: `${item}`,
+            position,
+            rotation,
+            scale,
+            goToScene,
+            onClick,
           });
         },
         {

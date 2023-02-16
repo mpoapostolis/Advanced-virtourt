@@ -9,7 +9,7 @@ export async function getItems(req: NextApiRequest, res: NextApiResponse) {
     .getFullList<ItemType>(200 /* batch size */, {
       sort: "-created",
       filter: `scene_id='${req.query.sId}'`,
-      expand: "image",
+      expand: "image,painter",
     });
 
   const data = records.map((record) => {
@@ -24,9 +24,14 @@ export async function getItems(req: NextApiRequest, res: NextApiResponse) {
 
 export async function getItemByid(req: NextApiRequest, res: NextApiResponse) {
   const pb = await getPocketBase();
-  const records = await pb.collection("items").getOne(req.query.id as string);
+  const record = await pb
+    .collection("items")
+    .getOne<ItemType>(req.query.id as string, {
+      expand: "image,painter",
+    });
+  const src = `${process.env.PB_URL}/api/files/${record.expand.image?.collectionId}/${record.expand.image?.id}/${record.expand.image?.image}`;
 
-  res.status(200).json(records);
+  res.status(200).json({ ...record, src });
 }
 
 export async function updateItem(req: NextApiRequest, res: NextApiResponse) {

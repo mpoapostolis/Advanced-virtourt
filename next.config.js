@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  i18n: {
+    locales: ["el", "en"],
+    defaultLocale: "el",
+  },
+
   rewrites() {
     return [
       {

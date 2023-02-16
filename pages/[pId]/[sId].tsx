@@ -10,6 +10,7 @@ import {
 import { Suspense } from "react";
 
 import { ClientItem } from "@/components/Item/client";
+import { Modal } from "@/components/Modal";
 import { SceneSelector } from "@/components/SceneSelector";
 import { Canvas } from "@react-three/fiber";
 import { useRouter } from "next/router";
@@ -60,9 +61,8 @@ export default function Page() {
       >
         {sceneObj?.name ?? "-"}
       </div>
-
+      <Modal />
       <SceneSelector />
-      <>{/* The button to open modal */}</>
     </div>
   );
 }

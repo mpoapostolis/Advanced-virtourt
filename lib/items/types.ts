@@ -22,6 +22,18 @@ export interface ItemType {
       name: string;
       updated: string;
     };
+    painter: {
+      biography_en: string;
+      biography_gr: string;
+      collectionId: string;
+      collectionName: string;
+      created: string;
+      date: string;
+      id: string;
+      name_en: string;
+      name_gr: string;
+      updated: string;
+    };
   };
   id: string;
   src: string;

@@ -21,22 +21,39 @@ export const ClientItem = function Item(props: ItemType) {
     ref.current.scale.copy(scale);
   }, []);
 
-  const x =
-    "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
-  const l = x.replace(/ /g, "").length;
+  const descScale = 1 / props.scale;
 
+  const locale = router.locale ?? "gr";
+  const title = locale === "gr" ? props.title_gr : props.title_en;
+  const painter =
+    locale === "gr"
+      ? props.expand.painter.name_gr
+      : props.expand.painter.name_en;
   return (
-    <group ref={ref}>
+    <group
+      onClick={() => {
+        if (props.goToScene)
+          router.push(`/${router.query.pId}/${props.goToScene}`);
+        else
+          router.replace(
+            `/${router.query.pId}/${router.query.sId}?item=${props.id}`
+          );
+      }}
+      ref={ref}
+    >
       <mesh>
         <boxGeometry args={[10 * aspect, 10, 0.5]} />
         <meshBasicMaterial side={DoubleSide} attach="material" map={texture} />
       </mesh>
 
-      <Html transform position={[0, -6.5, 0]}>
-        <div className="flex h-fit w-fit flex-col bg-[#faf8f1] p-4 uppercase leading-7 text-black">
-          {props.description.split("<br/>").map((word, i) => (
-            <div key={i}>{word}</div>
-          ))}
+      <Html
+        scale={[descScale, descScale, descScale]}
+        transform
+        position={[0, -6, 0]}
+      >
+        <div className="flex h-fit w-fit flex-col bg-[#faf8f1]  p-4 uppercase leading-7 text-black duration-300 hover:scale-150">
+          <div>{title}</div>
+          <div>{painter}</div>
         </div>
       </Html>
     </group>

@@ -14,11 +14,9 @@ export function setToLeva(props: ItemType) {
   levaStore.set(
     {
       item: props.id,
-      description: props.description,
       position: props.position,
       rotation: [rot.x, rot.y, rot.z],
       scale: props.scale,
-      vissible: props.vissible,
       goToScene: props.goToScene,
       onClick: props.onClick,
     },

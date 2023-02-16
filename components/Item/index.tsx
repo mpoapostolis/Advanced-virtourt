@@ -3,6 +3,7 @@ import { Arr3, createE3, createV3 } from "@/lib/leva";
 import { Html, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { levaStore } from "leva";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { DoubleSide, Euler, Group, Vector3 } from "three";
 
@@ -48,7 +49,15 @@ export const Item = function Item(props: ItemType) {
     ref.current.rotation.copy(rot);
     ref.current.scale.copy(scale);
   }, []);
+  const router = useRouter();
+  const locale = router.locale ?? "gr";
+  const title = locale === "gr" ? props.title_gr : props.title_en;
+  const painter =
+    locale === "gr"
+      ? props.expand.painter.name_gr
+      : props.expand.painter.name_en;
 
+  const descScale = 1 / _scale;
   return (
     <group
       ref={ref}
@@ -73,14 +82,18 @@ export const Item = function Item(props: ItemType) {
         <boxGeometry args={[10 * aspect, 10, 0.5]} />
         <meshBasicMaterial side={DoubleSide} attach="material" map={texture} />
       </mesh>
-
-      <Html transform position={[0, -6.5, 0]}>
+      <Html
+        scale={[descScale, descScale, descScale]}
+        transform
+        position={[0, -6 - descScale * 1.2, 0]}
+      >
         <div
-          className="btn h-fit w-fit p-4 uppercase leading-7"
-          dangerouslySetInnerHTML={{
-            __html: props.description,
-          }}
-        ></div>
+          role="button"
+          className="flex h-fit w-fit flex-col bg-[#faf8f1]  p-4 uppercase leading-7 text-black duration-300 hover:scale-150"
+        >
+          <div>{title}</div>
+          <div>{painter}</div>
+        </div>
       </Html>
     </group>
   );
