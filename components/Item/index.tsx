@@ -50,10 +50,11 @@ export const Item = function Item(props: ItemType) {
     ref.current.scale.copy(scale);
   }, []);
   const router = useRouter();
-  const locale = router.locale ?? "gr";
-  const title = locale === "gr" ? props.title_gr : props.title_en;
+  console.log(router.locale);
+  const locale = router.locale ?? "el";
+  const title = locale === "el" ? props.title_gr : props.title_en;
   const painter =
-    locale === "gr"
+    locale === "el"
       ? props.expand.painter.name_gr
       : props.expand.painter.name_en;
 

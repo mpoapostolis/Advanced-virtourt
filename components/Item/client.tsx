@@ -23,10 +23,10 @@ export const ClientItem = function Item(props: ItemType) {
 
   const descScale = 1 / props.scale;
 
-  const locale = router.locale ?? "gr";
-  const title = locale === "gr" ? props.title_gr : props.title_en;
+  const locale = router.locale ?? "el";
+  const title = locale === "el" ? props.title_gr : props.title_en;
   const painter =
-    locale === "gr"
+    locale === "el"
       ? props.expand.painter.name_gr
       : props.expand.painter.name_en;
   return (
