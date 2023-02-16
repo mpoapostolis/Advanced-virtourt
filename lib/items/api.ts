@@ -1,19 +1,21 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getPocketBase } from "../pocketBase";
+import { ItemType } from "./types";
 
 export async function getItems(req: NextApiRequest, res: NextApiResponse) {
   const pb = await getPocketBase();
   const records = await pb
     .collection("items")
-    .getFullList(200 /* batch size */, {
+    .getFullList<ItemType>(200 /* batch size */, {
       sort: "-created",
       filter: `scene_id='${req.query.sId}'`,
+      expand: "image",
     });
 
   const data = records.map((record) => {
     return {
       ...record,
-      src: `${process.env.PB_URL}/api/files/${record.collectionId}/${record.id}/${record.image}`,
+      src: `${process.env.PB_URL}/api/files/${record.expand.image?.collectionId}/${record.expand.image?.id}/${record.expand.image?.image}`,
     };
   });
 

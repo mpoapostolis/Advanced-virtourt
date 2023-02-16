@@ -32,7 +32,7 @@ export function useLeva() {
   const objItem = items.reduce(
     (acc, cur) => ({
       ...acc,
-      [cur.name]: cur.id,
+      [cur.painter_gr]: cur.id,
     }),
     {}
   );
@@ -155,13 +155,13 @@ export function useLeva() {
 
           save({
             // ...item,
-            id,
-            description,
-            position,
-            rotation,
-            scale,
-            goToScene,
-            onClick,
+            // id,
+            // description,
+            // position,
+            // rotation,
+            // scale,
+            // goToScene,
+            // onClick,
           });
         },
         {
