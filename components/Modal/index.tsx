@@ -2,12 +2,17 @@ import { useItem } from "@/lib/items/queries";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function Modal() {
   const { data: item } = useItem();
   const router = useRouter();
   const [biography, setBiography] = useState(false);
+
+  useEffect(() => {
+    if (item?.id) setBiography(true);
+  }, [item]);
+
   return (
     <>
       <div
