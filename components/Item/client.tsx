@@ -27,8 +27,8 @@ export const ClientItem = function Item(props: ItemType) {
   const title = locale === "el" ? props.title_gr : props.title_en;
   const painter =
     locale === "el"
-      ? props.expand.painter.name_gr
-      : props.expand.painter.name_en;
+      ? props.expand?.painter?.name_gr
+      : props.expand?.painter?.name_en;
   return (
     <group
       onClick={() => {

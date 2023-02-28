@@ -54,8 +54,8 @@ export const Item = function Item(props: ItemType) {
   const title = locale === "el" ? props.title_gr : props.title_en;
   const painter =
     locale === "el"
-      ? props.expand.painter.name_gr
-      : props.expand.painter.name_en;
+      ? props.expand?.painter?.name_gr
+      : props.expand?.painter?.name_en;
 
   const descScale = 1 / (router.query.item === props.id ? _scale : props.scale);
   return (
@@ -81,21 +81,28 @@ export const Item = function Item(props: ItemType) {
     >
       <mesh>
         <boxGeometry args={[10 * aspect, 10, 0.5]} />
-        <meshBasicMaterial side={DoubleSide} attach="material" map={texture} />
+        <meshBasicMaterial
+          transparent
+          side={DoubleSide}
+          attach="material"
+          map={texture}
+        />
       </mesh>
-      <Html
-        scale={[descScale, descScale, descScale]}
-        transform
-        position={[0, -6 - descScale * 1.2, 0]}
-      >
-        <div
-          role="button"
-          className="flex h-fit w-fit flex-col bg-[#faf8f1]  p-4 uppercase leading-7 text-black duration-300 hover:scale-150"
+      {painter && (
+        <Html
+          scale={[descScale, descScale, descScale]}
+          transform
+          position={[0, -6 - descScale * 1.2, 0]}
         >
-          <div>{title}</div>
-          <div>{painter}</div>
-        </div>
-      </Html>
+          <div
+            role="button"
+            className="flex h-fit w-fit flex-col bg-[#faf8f1]  p-4 uppercase leading-7 text-black duration-300 hover:scale-150"
+          >
+            <div>{title}</div>
+            <div>{painter}</div>
+          </div>
+        </Html>
+      )}
     </group>
   );
 };
