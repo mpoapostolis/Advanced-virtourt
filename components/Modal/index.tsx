@@ -1,5 +1,6 @@
 import { useItem } from "@/lib/items/queries";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -14,7 +15,7 @@ export function Modal() {
           "modal-open": item?.id,
         })}
       >
-        <div className="modal-box relative  w-11/12 max-w-5xl">
+        <div className="modal-box relative  h-full w-11/12 max-w-5xl">
           <label
             onClick={() => {
               router.replace({
@@ -43,21 +44,31 @@ export function Modal() {
             </h4>
           </div>
           <div className="divider"></div>
-          <div
-            className={clsx("grid gap-3 duration-200", {
-              "grid-cols-2": biography,
-            })}
-          >
-            <picture>
-              <img className="h-full w-full" src={item?.src} alt="" />
-            </picture>
-            <div
+          <div className={clsx("flex flex-wrap gap-4", {})}>
+            <motion.picture
+              animate={{
+                width: biography ? "100%" : "48%",
+              }}
               className={clsx({
-                hidden: !biography,
+                "border border-white border-opacity-20 px-2": !biography,
               })}
             >
+              <motion.img
+                className="h-[71vh] w-full  object-scale-down "
+                src={item?.src}
+                alt=""
+              />
+            </motion.picture>
+            <motion.div
+              transition={{ duration: 0.05 }}
+              animate={{
+                width: biography ? "0px" : "48%",
+                height: biography ? "0px" : "48%",
+              }}
+              className="h-[71vh] w-full overflow-auto "
+            >
               {item?.expand?.painter?.biography_gr}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
