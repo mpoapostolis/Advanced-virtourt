@@ -58,6 +58,7 @@ export const Item = function Item(props: ItemType) {
       : props.expand?.painter?.name_en;
 
   const descScale = 1 / (router.query.item === props.id ? _scale : props.scale);
+
   return (
     <group
       ref={ref}
@@ -88,17 +89,20 @@ export const Item = function Item(props: ItemType) {
           map={texture}
         />
       </mesh>
+
       {painter && (
         <Html
           scale={[descScale, descScale, descScale]}
           transform
-          position={[0, -6 - descScale * 1.2, 0]}
+          position={[5 * aspect + 5 * descScale, 3, 0]}
         >
           <div
             role="button"
-            className="flex h-fit w-fit flex-col bg-[#faf8f1]  p-4 uppercase leading-7 text-black duration-300 hover:scale-150"
+            className="flex  w-72 flex-col bg-[#faf8f1] p-4   uppercase leading-7 text-black duration-300 hover:scale-150"
           >
-            <div>{title}</div>
+            <div>
+              {title} {props.size}
+            </div>
             <div>{painter}</div>
           </div>
         </Html>

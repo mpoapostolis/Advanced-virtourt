@@ -29,6 +29,8 @@ export const ClientItem = function Item(props: ItemType) {
     locale === "el"
       ? props.expand?.painter?.name_gr
       : props.expand?.painter?.name_en;
+  const material = locale === "el" ? props.material_gr : props.material_en;
+
   return (
     <group
       onClick={() => {
@@ -46,16 +48,25 @@ export const ClientItem = function Item(props: ItemType) {
         <meshBasicMaterial side={DoubleSide} attach="material" map={texture} />
       </mesh>
 
-      <Html
-        scale={[descScale, descScale, descScale]}
-        transform
-        position={[0, -6 - descScale * 1.2, 0]}
-      >
-        <div className="flex h-fit w-fit flex-col bg-[#faf8f1]  p-4 uppercase leading-7 text-black duration-300 hover:scale-150">
-          <div>{title}</div>
-          <div>{painter}</div>
-        </div>
-      </Html>
+      {painter && (
+        <Html
+          scale={[descScale, descScale, descScale]}
+          transform
+          position={[5 * aspect + 5 * descScale, 3.5, 0]}
+        >
+          <div
+            role="button"
+            className="flex  w-80 flex-col bg-[#faf8f1] p-4   uppercase leading-7 text-black duration-300 hover:scale-150"
+          >
+            <div className="bold">{title}</div>
+            <div>{painter}</div>
+
+            <h4 className="">
+              {material}, <span className="bold ml-3">{props.size}</span>
+            </h4>
+          </div>
+        </Html>
+      )}
     </group>
   );
 };

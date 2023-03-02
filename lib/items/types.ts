@@ -41,5 +41,6 @@ export interface ItemType {
   rotation: Euler;
   scale: number;
   onClick: string;
+  size: string;
   goToScene: string;
 }

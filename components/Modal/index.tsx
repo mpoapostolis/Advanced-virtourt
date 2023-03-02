@@ -34,18 +34,21 @@ export function Modal() {
           >
             ✕
           </label>
-          <h3 className="text-lg font-bold">{item?.title_gr}</h3>
-          <h3>{item?.expand?.painter?.name_gr} </h3>
-          <div className="flex justify-between">
-            <h4 className="label-text label">{item?.material_gr}</h4>
-            <h4
-              role="button"
+          <h3 className="text-lg font-bold">
+            {item?.title_gr}
+            <button
               onClick={() => {
                 setBiography(!biography);
               }}
-              className="link"
+              className="ml-10 underline"
             >
-              {biography ? "Hide" : "Show"} biography
+              {item?.expand?.painter?.name_gr}
+            </button>
+          </h3>
+          <div className="flex justify-between">
+            <h4 className="label-text label">
+              {item?.material_gr},{" "}
+              <span className="bold ml-3">{item.size}</span>
             </h4>
           </div>
           <div className="divider"></div>
