@@ -13,6 +13,14 @@ export function Modal() {
     if (item?.id) setBiography(true);
   }, [item]);
 
+  const locale = router.locale ?? "el";
+  const title = locale === "el" ? item.title_gr : item.title_en;
+  const painter =
+    locale === "el"
+      ? item.expand?.painter?.name_gr
+      : item.expand?.painter?.name_en;
+  const material = locale === "el" ? item.material_gr : item.material_en;
+
   return (
     <>
       <div
@@ -34,23 +42,25 @@ export function Modal() {
           >
             ✕
           </label>
-          <h3 className="text-lg font-bold">
-            {item?.title_gr}
+          <div className="font-bold uppercase">
             <button
               onClick={() => {
                 setBiography(!biography);
               }}
-              className="ml-10 underline"
+              className="underline"
             >
-              {item?.expand?.painter?.name_gr}
+              {painter}
             </button>
-          </h3>
-          <div className="flex justify-between">
-            <h4 className="label-text label">
-              {item?.material_gr},{" "}
-              <span className="bold ml-3">{item.size}</span>
-            </h4>
           </div>
+          <div className="first-letter:capitalize">
+            {title.toLocaleLowerCase()}
+          </div>
+
+          <h4 className="first-letter:capitalize">
+            {material.toLocaleLowerCase()},{" "}
+            <span className="bold ml-3">{item.size}</span>
+          </h4>
+
           <div className="divider"></div>
           <div className={clsx("flex flex-wrap gap-4", {})}>
             <motion.picture
