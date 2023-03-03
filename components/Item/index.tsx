@@ -58,6 +58,7 @@ export const Item = function Item(props: ItemType) {
       : props.expand?.painter?.name_en;
 
   const descScale = 1 / (router.query.item === props.id ? _scale : props.scale);
+  const material = locale === "el" ? props.material_gr : props.material_en;
 
   return (
     <group
@@ -100,10 +101,13 @@ export const Item = function Item(props: ItemType) {
             role="button"
             className="flex  w-72 flex-col bg-[#faf8f1] p-4   uppercase leading-7 text-black duration-300 hover:scale-150"
           >
-            <div>
-              {title} {props.size}
-            </div>
-            <div>{painter}</div>
+            <div className="font-bold uppercase">{painter}</div>
+
+            <div>{`"${title}"`}</div>
+
+            <h4 className="first-letter:capitalize">
+              {material}, <span className="bold ml-3">{props.size}</span>
+            </h4>
           </div>
         </Html>
       )}

@@ -59,13 +59,11 @@ export const ClientItem = function Item(props: ItemType) {
             className="flex  w-80 flex-col bg-[#faf8f1] p-4 text-center    leading-7 text-black duration-300 hover:scale-150"
           >
             <div className="font-bold uppercase">{painter}</div>
-            <div className="first-letter:capitalize">
-              {title.toLocaleLowerCase()}
-            </div>
+
+            <div>{`"${title}"`}</div>
 
             <h4 className="first-letter:capitalize">
-              {material.toLocaleLowerCase()},{" "}
-              <span className="bold ml-3">{props.size}</span>
+              {material}, <span className="bold ml-3">{props.size}</span>
             </h4>
           </div>
         </Html>

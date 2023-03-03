@@ -52,13 +52,10 @@ export function Modal() {
               {painter}
             </button>
           </div>
-          <div className="first-letter:capitalize">
-            {title.toLocaleLowerCase()}
-          </div>
+          <div>{`"${title}"`}</div>
 
           <h4 className="first-letter:capitalize">
-            {material.toLocaleLowerCase()},{" "}
-            <span className="bold ml-3">{item.size}</span>
+            {material}, <span className="bold ml-3">{item.size}</span>
           </h4>
 
           <div className="divider"></div>
