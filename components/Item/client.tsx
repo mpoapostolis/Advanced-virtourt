@@ -52,9 +52,14 @@ export const ClientItem = function Item(props: ItemType) {
         <Html
           scale={[descScale, descScale, descScale]}
           transform
-          position={[5 * aspect + 5 * descScale, 3.5, 0]}
+          position={[5 * aspect + 5 * descScale, -1, 0]}
         >
           <div
+            onClick={() => {
+              router.replace(
+                `/${router.query.pId}/${router.query.sId}?item=${props.id}&author=true`
+              );
+            }}
             role="button"
             className="flex  w-80 flex-col bg-[#faf8f1] p-4 text-center    leading-7 text-black duration-300 hover:scale-150"
           >

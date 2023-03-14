@@ -95,7 +95,7 @@ export const Item = function Item(props: ItemType) {
         <Html
           scale={[descScale, descScale, descScale]}
           transform
-          position={[5 * aspect + 5 * descScale, 3, 0]}
+          position={[5 * aspect + 5 * descScale, -1, 0]}
         >
           <div
             role="button"
