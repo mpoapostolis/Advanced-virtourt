@@ -3,7 +3,7 @@ import { createE3 } from "@/lib/leva";
 import { Html, useTexture } from "@react-three/drei";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-import { DoubleSide, Euler, Group, Vector3 } from "three";
+import { Euler, FrontSide, Group, Vector3 } from "three";
 
 export const ClientItem = function Item(props: ItemType) {
   const texture = useTexture(props.src ?? "/images/empty.png");
@@ -44,8 +44,17 @@ export const ClientItem = function Item(props: ItemType) {
       ref={ref}
     >
       <mesh>
-        <boxGeometry args={[10 * aspect, 10, 0.5]} />
-        <meshBasicMaterial side={DoubleSide} attach="material" map={texture} />
+        {props.flat ? (
+          <planeGeometry args={[10 * aspect, 10]} />
+        ) : (
+          <boxGeometry args={[10 * aspect, 10, 0.5]} />
+        )}
+        <meshBasicMaterial
+          transparent
+          side={!props.flat ? FrontSide : undefined}
+          attach="material"
+          map={texture}
+        />
       </mesh>
 
       {painter && (

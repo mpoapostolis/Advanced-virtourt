@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import { levaStore } from "leva";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { DoubleSide, Euler, Group, Vector3 } from "three";
+import { Euler, FrontSide, Group, Vector3 } from "three";
 
 export const Item = function Item(props: ItemType) {
   const texture = useTexture(props.src ?? "/images/empty.png");
@@ -82,10 +82,14 @@ export const Item = function Item(props: ItemType) {
       }}
     >
       <mesh>
-        <boxGeometry args={[10 * aspect, 10, 0.5]} />
+        {props.flat ? (
+          <planeGeometry args={[10 * aspect, 10]} />
+        ) : (
+          <boxGeometry args={[10 * aspect, 10, 0.5]} />
+        )}
         <meshBasicMaterial
           transparent
-          side={DoubleSide}
+          side={!props.flat ? FrontSide : undefined}
           attach="material"
           map={texture}
         />

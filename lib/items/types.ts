@@ -6,6 +6,7 @@ export interface ItemType {
   painter_en: string;
   material_gr: string;
   material_en: string;
+  flat?: boolean;
   title_gr: string;
   title_en: string;
   img: string;
