@@ -10,7 +10,6 @@ import {
 import { Suspense } from "react";
 
 import { ClientItem } from "@/components/Item/client";
-import { MobileSceneSelector } from "@/components/MobileSceneSelector";
 import { Modal } from "@/components/Modal";
 import { SceneSelector } from "@/components/SceneSelector";
 import { Canvas } from "@react-three/fiber";
@@ -40,9 +39,9 @@ export default function Page() {
   const { data: item } = useItem();
   const desc = item?.description_el ?? item?.description_en;
   return (
-    <div className="  h-screen  w-screen  lg:grid lg:grid-cols-[250px_1fr]">
+    <div className="  h-screen  w-screen">
       <SceneSelector />
-      <div className="relative">
+      <div className="relative h-screen w-screen">
         <Canvas className="pointer-events-none z-20 select-none">
           <Suspense fallback={<CustomLoader />}>
             <Scene src={sceneObj?.src ?? "/images/empty.png"} />
@@ -61,13 +60,12 @@ export default function Page() {
           style={{
             WebkitTextStroke: "0.8px black",
           }}
-          className=" absolute top-4 left-4 z-50 stroke-slate-400 text-5xl font-semibold capitalize text-white"
+          className="pointer-events-none  absolute top-0 z-40 w-screen border-0 stroke-slate-400 text-center text-5xl font-semibold capitalize text-white"
         >
           {sceneObj?.name ?? "-"}
         </div>
       </div>
       {!desc && <Modal />}
-      <MobileSceneSelector />
     </div>
   );
 }
