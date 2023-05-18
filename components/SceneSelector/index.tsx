@@ -8,7 +8,7 @@ export function SceneSelector() {
   const { data: scenes } = useScenes();
   const { scene, pId } = router.query;
   return (
-    <div className="grid h-screen  gap-4  overflow-auto  border-r border-base-300 p-2">
+    <div className="hidden h-screen gap-4  overflow-auto  border-r  border-base-300 p-2 lg:grid">
       {scenes.map((s) => (
         <Link
           key={s?.id}

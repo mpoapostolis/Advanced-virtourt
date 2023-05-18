@@ -10,6 +10,7 @@ import {
 import { Suspense } from "react";
 
 import { ClientItem } from "@/components/Item/client";
+import { MobileSceneSelector } from "@/components/MobileSceneSelector";
 import { Modal } from "@/components/Modal";
 import { SceneSelector } from "@/components/SceneSelector";
 import { Canvas } from "@react-three/fiber";
@@ -39,7 +40,7 @@ export default function Page() {
   const { data: item } = useItem();
   const desc = item?.description_el ?? item?.description_en;
   return (
-    <div className="  grid  h-screen  w-screen grid-cols-[250px_1fr]">
+    <div className="  h-screen  w-screen  lg:grid lg:grid-cols-[250px_1fr]">
       <SceneSelector />
       <div className="relative">
         <Canvas className="pointer-events-none z-20 select-none">
@@ -66,6 +67,7 @@ export default function Page() {
         </div>
       </div>
       {!desc && <Modal />}
+      <MobileSceneSelector />
     </div>
   );
 }
