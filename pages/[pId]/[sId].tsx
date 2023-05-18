@@ -38,31 +38,33 @@ export default function Page() {
   const sceneObj = scenes.find((s) => s.id === sId);
 
   return (
-    <div className="  h-screen  w-screen ">
-      <Canvas className="pointer-events-none z-20 select-none">
-        <Suspense fallback={<CustomLoader />}>
-          <Scene src={sceneObj?.src ?? "/images/empty.png"} />
-          <PerspectiveCamera
-            fov={70}
-            makeDefault
-            position={[0, 0, MIN_DISTANCE]}
-          />
-          <OrbitControls makeDefault />
-          {items.map((item) => (
-            <ClientItem key={item.id} {...item} />
-          ))}
-        </Suspense>
-      </Canvas>
-      <div
-        style={{
-          WebkitTextStroke: "0.8px black",
-        }}
-        className=" fixed top-4 left-4 z-50 stroke-slate-400 text-5xl font-semibold capitalize text-white"
-      >
-        {sceneObj?.name ?? "-"}
+    <div className="  grid  h-screen  w-screen grid-cols-[250px_1fr]">
+      <SceneSelector />
+      <div className="relative">
+        <Canvas className="pointer-events-none z-20 select-none">
+          <Suspense fallback={<CustomLoader />}>
+            <Scene src={sceneObj?.src ?? "/images/empty.png"} />
+            <PerspectiveCamera
+              fov={70}
+              makeDefault
+              position={[0, 0, MIN_DISTANCE]}
+            />
+            <OrbitControls makeDefault />
+            {items.map((item) => (
+              <ClientItem key={item.id} {...item} />
+            ))}
+          </Suspense>
+        </Canvas>
+        <div
+          style={{
+            WebkitTextStroke: "0.8px black",
+          }}
+          className=" absolute top-4 left-4 z-50 stroke-slate-400 text-5xl font-semibold capitalize text-white"
+        >
+          {sceneObj?.name ?? "-"}
+        </div>
       </div>
       <Modal />
-      <SceneSelector />
     </div>
   );
 }

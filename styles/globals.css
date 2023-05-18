@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* make scroll smaller */
+::-webkit-scrollbar {
+  width: 0.25rem;
+  height: 4px;
+}
