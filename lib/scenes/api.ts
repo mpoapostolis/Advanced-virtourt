@@ -5,6 +5,7 @@ export async function getScenes(req: NextApiRequest, res: NextApiResponse) {
   const pb = await getPocketBase();
   const records = await pb.collection("scenes").getFullList(200, {
     filter: `project_id = '${req.query.pId}'`,
+    sort: "-created",
   });
 
   const data = records.map((record) => {

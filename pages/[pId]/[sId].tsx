@@ -1,5 +1,5 @@
 import { CustomLoader } from "@/components/Loader";
-import { useItems } from "@/lib/items/queries";
+import { useItem, useItems } from "@/lib/items/queries";
 import { useScenes } from "@/lib/scenes/queries";
 import {
   Environment,
@@ -36,7 +36,8 @@ export default function Page() {
   const { data: scenes } = useScenes();
   const { sId } = router.query;
   const sceneObj = scenes.find((s) => s.id === sId);
-
+  const { data: item } = useItem();
+  const desc = item?.description_el ?? item?.description_en;
   return (
     <div className="  grid  h-screen  w-screen grid-cols-[250px_1fr]">
       <SceneSelector />
@@ -64,7 +65,7 @@ export default function Page() {
           {sceneObj?.name ?? "-"}
         </div>
       </div>
-      <Modal />
+      {!desc && <Modal />}
     </div>
   );
 }

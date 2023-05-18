@@ -10,6 +10,8 @@ export interface ItemType {
   title_gr: string;
   title_en: string;
   img: string;
+  description_el?: string;
+  description_en?: string;
   painter_date: string;
   painter_biography_gr: string;
   painter_biography_en: string;

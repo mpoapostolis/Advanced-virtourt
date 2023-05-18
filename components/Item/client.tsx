@@ -2,7 +2,7 @@ import { ItemType } from "@/lib/items/types";
 import { createE3 } from "@/lib/leva";
 import { Html, useTexture } from "@react-three/drei";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Euler, FrontSide, Group, Vector3 } from "three";
 
 export const ClientItem = function Item(props: ItemType) {
@@ -30,10 +30,12 @@ export const ClientItem = function Item(props: ItemType) {
       ? props.expand?.painter?.name_gr
       : props.expand?.painter?.name_en;
   const material = locale === "el" ? props.material_gr : props.material_en;
-
+  const desc = locale === "el" ? props.description_el : props.description_en;
+  const [showDesc, setShowDesc] = useState(false);
   return (
     <group
       onClick={() => {
+        if (desc) setShowDesc(!showDesc);
         if (props.goToScene)
           router.push(`/${router.query.pId}/${props.goToScene}`);
         else
@@ -79,6 +81,14 @@ export const ClientItem = function Item(props: ItemType) {
             <h4 className="first-letter:capitalize">
               {material}, <span className="bold ml-3">{props.size}</span>
             </h4>
+          </div>
+        </Html>
+      )}
+
+      {showDesc && (
+        <Html position={[0, 5, 0]}>
+          <div className="grid w-96 place-items-center bg-black p-4">
+            {desc}
           </div>
         </Html>
       )}
