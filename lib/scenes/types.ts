@@ -5,4 +5,5 @@ export interface Scene {
   id: string;
   src: string;
   name: string;
+  hideFromMenu?: boolean;
 }

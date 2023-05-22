@@ -21,7 +21,8 @@ export function SceneSelector() {
       <div className="drawer-content">
         <label
           htmlFor="my-drawer"
-          className="btn-primary drawer-button btn pointer-events-auto absolute bottom-4 right-4 m-4 rounded lg:static"
+          className="btn-primary drawer-button btn pointer-events-auto absolute 
+          bottom-4 right-4 m-4 rounded lg:static"
         >
           <picture>
             <img
@@ -40,25 +41,27 @@ export function SceneSelector() {
         ></label>
         <ul className="menu pointer-events-auto h-screen w-80 overflow-auto bg-base-100 p-4 text-base-content">
           <div className=" grid h-screen gap-4  overflow-auto  border-r  border-base-300 p-2 lg:grid">
-            {scenes.map((s) => (
-              <li key={s?.id}>
-                <Link
-                  onClick={() => {
-                    ref?.current?.click();
-                  }}
-                  href={`/${pId}/${s.id}`}
-                  role="button"
-                  className={clsx(
-                    "rounded-box pointer-events-auto grid h-32  w-full  place-items-center bg-base-300 p-4 text-center text-base-content",
-                    {
-                      "border border-yellow-500": s.name === scene,
-                    }
-                  )}
-                >
-                  {s.name}
-                </Link>
-              </li>
-            ))}
+            {scenes
+              ?.filter((obj) => !obj.hideFromMenu)
+              .map((s) => (
+                <li key={s?.id}>
+                  <Link
+                    onClick={() => {
+                      ref?.current?.click();
+                    }}
+                    href={`/${pId}/${s.id}`}
+                    role="button"
+                    className={clsx(
+                      "rounded-box pointer-events-auto grid h-32  w-full  place-items-center bg-base-300 p-4 text-center text-base-content",
+                      {
+                        "border border-yellow-500": s.name === scene,
+                      }
+                    )}
+                  >
+                    {s.name}
+                  </Link>
+                </li>
+              ))}
           </div>
         </ul>
       </div>
