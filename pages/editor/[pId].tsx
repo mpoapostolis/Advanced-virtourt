@@ -20,7 +20,7 @@ function Scene(props: { src: string }) {
   const texture = useTexture(props.src);
   return (
     <Environment background resolution={1920}>
-      <mesh scale={100}>
+      <mesh scale={[-100, 100, 100]}>
         <sphereGeometry args={[1, 64, 64]} />
         <meshBasicMaterial map={texture} side={BackSide} />
       </mesh>
