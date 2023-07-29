@@ -62,7 +62,7 @@ export default function Page() {
           }}
           className="pointer-events-none  absolute top-0 z-40 w-screen border-0 stroke-slate-400 text-center text-5xl font-semibold capitalize text-white"
         >
-          {sceneObj?.name ?? "-"}
+          {sceneObj?.name?.split("-")?.at(0) ?? "-"}
         </div>
       </div>
       {!desc && <Modal />}

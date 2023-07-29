@@ -39,31 +39,33 @@ export function SceneSelector() {
           htmlFor="my-drawer"
           className="drawer-overlay pointer-events-auto"
         ></label>
-        <ul className="menu pointer-events-auto h-screen w-80 overflow-auto bg-base-100 p-4 text-base-content">
-          <div className=" grid h-screen gap-4  overflow-auto  border-r  border-base-300 p-2 lg:grid">
-            {scenes
-              ?.filter((obj) => !obj.hideFromMenu)
-              .map((s) => (
-                <li key={s?.id}>
-                  <Link
-                    onClick={() => {
-                      ref?.current?.click();
-                    }}
-                    href={`/${pId}/${s.id}`}
-                    role="button"
-                    className={clsx(
-                      "rounded-box pointer-events-auto grid h-32  w-full  place-items-center bg-base-300 p-4 text-center text-base-content",
-                      {
-                        "border border-yellow-500": s.name === scene,
-                      }
-                    )}
-                  >
-                    {s.name}
-                  </Link>
-                </li>
-              ))}
-          </div>
-        </ul>
+        <div className="h-screen overflow-auto">
+          <ul className="menu pointer-events-auto h-full w-80 overflow-auto bg-base-100 p-4 text-base-content">
+            <div className=" grid h-fit gap-4    border-r  border-base-300 p-2 lg:grid">
+              {scenes
+                ?.filter((obj) => !obj.hideFromMenu)
+                .map((s) => (
+                  <li key={s?.id}>
+                    <Link
+                      onClick={() => {
+                        ref?.current?.click();
+                      }}
+                      href={`/${pId}/${s.id}`}
+                      role="button"
+                      className={clsx(
+                        "rounded-box pointer-events-auto grid h-fit  w-full  place-items-center bg-base-300 p-4 text-center text-base-content",
+                        {
+                          "border border-yellow-500": s.name === scene,
+                        }
+                      )}
+                    >
+                      {s.name}
+                    </Link>
+                  </li>
+                ))}
+            </div>
+          </ul>
+        </div>
       </div>
     </div>
   );
