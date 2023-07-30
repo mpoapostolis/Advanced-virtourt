@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import { levaStore } from "leva";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { Euler, FrontSide, Group, Vector3 } from "three";
+import { DoubleSide, Euler, Group, Vector3 } from "three";
 
 export const Item = function Item(props: ItemType) {
   const texture = useTexture(props.src ?? "/images/empty.png");
@@ -81,7 +81,20 @@ export const Item = function Item(props: ItemType) {
         if (dragging) return;
       }}
     >
-      <mesh>
+      <mesh
+        onPointerEnter={() => {
+          // make cursor a pointer
+          if (window?.document?.body?.style) {
+            window.document.body.style.cursor = "pointer";
+          }
+        }}
+        onPointerLeave={() => {
+          // make cursor a pointer
+          if (window?.document?.body?.style) {
+            window.document.body.style.cursor = "default";
+          }
+        }}
+      >
         {props.flat ? (
           <planeGeometry args={[10 * aspect, 10]} />
         ) : (
@@ -89,7 +102,7 @@ export const Item = function Item(props: ItemType) {
         )}
         <meshBasicMaterial
           transparent
-          side={!props.flat ? FrontSide : undefined}
+          side={DoubleSide}
           attach="material"
           map={texture}
         />
