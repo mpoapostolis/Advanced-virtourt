@@ -59,7 +59,7 @@ export const ClientItem = function Item(props: ItemType) {
           }
         }}
       >
-        {!props.flat ? (
+        {props.flat ? (
           <planeGeometry args={[10 * aspect, 10]} />
         ) : (
           <boxGeometry args={[10 * aspect, 10, 0.5]} />
