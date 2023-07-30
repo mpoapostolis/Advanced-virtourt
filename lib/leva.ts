@@ -18,6 +18,7 @@ export function setToLeva(props: ItemType) {
       rotation: [rot.x, rot.y, rot.z],
       scale: props.scale,
       goToScene: props.goToScene,
+      flat: props.flat,
       onClick: props.onClick,
     },
     true

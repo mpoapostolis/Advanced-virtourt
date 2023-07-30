@@ -54,6 +54,7 @@ export function useLeva() {
     material_en: "",
     title_gr: "",
     title_en: "",
+    flat: false,
     painter_date: "",
     painter_biography_gr: "",
     painter_biography_en: "",
@@ -87,7 +88,7 @@ export function useLeva() {
         onChange: (value) => {
           replace({ item: value });
           const item = items.find((i) => i.id === value);
-          if (item) setToLeva(item);
+          if (item) setToLeva({ ...item });
         },
       },
     },
@@ -123,6 +124,10 @@ export function useLeva() {
         value: "",
         disabled: !item,
       },
+      flat: {
+        label: "Flat",
+        value: false,
+      },
       onClick: {
         label: "On click",
 
@@ -151,12 +156,13 @@ export function useLeva() {
           const [rx, ry, rz] = rot;
           const rotation = new Euler(rx, ry, rz);
           const position = new Vector3(x, y, z);
-
+          const flat = get("flat");
           save({
             id: `${item}`,
             position,
             rotation,
             scale,
+            flat,
             goToScene,
             onClick,
           });
