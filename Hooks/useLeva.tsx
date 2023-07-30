@@ -88,7 +88,7 @@ export function useLeva() {
         onChange: (value) => {
           replace({ item: value });
           const item = items.find((i) => i.id === value);
-          if (item) setToLeva({ ...item });
+          if (item) setToLeva({ ...item, flat: !item.flat });
         },
       },
     },
