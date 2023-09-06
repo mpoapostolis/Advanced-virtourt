@@ -32,6 +32,8 @@ export const ClientItem = function Item(props: ItemType) {
   const material = locale === "el" ? props.material_gr : props.material_en;
   const desc = locale === "el" ? props.description_el : props.description_en;
   const [showDesc, setShowDesc] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+
   return (
     <group
       onClick={() => {
@@ -42,6 +44,7 @@ export const ClientItem = function Item(props: ItemType) {
           router.replace(
             `/${router.query.pId}/${router.query.sId}?item=${props.id}`
           );
+        if (props.popup_video) setShowVideo(!showVideo);
       }}
       ref={ref}
     >
@@ -59,7 +62,7 @@ export const ClientItem = function Item(props: ItemType) {
           }
         }}
       >
-        {props.flat ? (
+        {props.flat || props.goToScene ? (
           <planeGeometry args={[10 * aspect, 10]} />
         ) : (
           <boxGeometry args={[10 * aspect, 10, 0.5]} />
@@ -102,6 +105,20 @@ export const ClientItem = function Item(props: ItemType) {
         <Html position={[0, 5, 0]}>
           <div className="grid w-96 place-items-center bg-black p-4">
             {desc}
+          </div>
+        </Html>
+      )}
+
+      {showVideo && (
+        <Html position={[0, 5, 0]}>
+          <div className="grid h-[50vh] w-[50vw] place-items-center bg-black">
+            <iframe
+              className="h-full w-full"
+              src={props.popup_video}
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen={true}
+            ></iframe>
           </div>
         </Html>
       )}

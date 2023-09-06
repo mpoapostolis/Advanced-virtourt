@@ -16,6 +16,12 @@ export async function getItems(req: NextApiRequest, res: NextApiResponse) {
     return {
       ...record,
       src: `${process.env.PB_URL}/api/files/${record.expand.image?.collectionId}/${record.expand.image?.id}/${record.expand.image?.image}`,
+      popup_video:
+        record.popup_video &&
+        pb.getFileUrl(record as any, `${record.popup_video}`),
+      popup_image:
+        record.popup_image &&
+        pb.getFileUrl(record as any, `${record.popup_image}`),
     };
   });
 

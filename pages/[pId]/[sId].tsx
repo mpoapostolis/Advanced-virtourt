@@ -12,6 +12,7 @@ import { Suspense } from "react";
 import { ClientItem } from "@/components/Item/client";
 import { Modal } from "@/components/Modal";
 import { SceneSelector } from "@/components/SceneSelector";
+import { useProjects } from "@/lib/projects/queries";
 import { Canvas } from "@react-three/fiber";
 import { useRouter } from "next/router";
 import { BackSide } from "three";
@@ -34,6 +35,9 @@ export default function Page() {
   const { data: items } = useItems();
   const router = useRouter();
   const { data: scenes } = useScenes();
+  const { data: projects } = useProjects();
+  const currProject = projects?.find((p) => p.id === router.query.pId);
+  const isVr = currProject?.type === "virtual-tour";
   const { sId } = router.query;
   const sceneObj = scenes.find((s) => s.id === sId);
   const { data: item } = useItem();

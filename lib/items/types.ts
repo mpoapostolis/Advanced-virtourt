@@ -3,10 +3,14 @@ export interface Expand {}
 
 export interface ItemType {
   painter_gr: string;
+  collectionId: string;
+  collectionName: string;
   painter_en: string;
   material_gr: string;
   material_en: string;
   flat?: boolean;
+  popup_video?: string;
+  popup_image?: string;
   title_gr: string;
   title_en: string;
   img: string;
