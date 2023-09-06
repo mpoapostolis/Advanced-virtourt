@@ -11,6 +11,7 @@ import { Suspense } from "react";
 
 import { ClientItem } from "@/components/Item/client";
 import { Modal } from "@/components/Modal";
+import { VirtualTourModal } from "@/components/Modal/virtual-tour";
 import { SceneSelector } from "@/components/SceneSelector";
 import { useProjects } from "@/lib/projects/queries";
 import { Canvas } from "@react-three/fiber";
@@ -37,7 +38,7 @@ export default function Page() {
   const { data: scenes } = useScenes();
   const { data: projects } = useProjects();
   const currProject = projects?.find((p) => p.id === router.query.pId);
-  const isVr = currProject?.type === "virtual-tour";
+  const isVirtualTour = currProject?.type === "virtual-tour";
   const { sId } = router.query;
   const sceneObj = scenes.find((s) => s.id === sId);
   const { data: item } = useItem();
@@ -69,7 +70,7 @@ export default function Page() {
           {sceneObj?.name?.split("-")?.at(0) ?? "-"}
         </div>
       </div>
-      {!desc && <Modal />}
+      {isVirtualTour ? <VirtualTourModal /> : <Modal />}
     </div>
   );
 }

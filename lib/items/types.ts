@@ -5,6 +5,7 @@ export interface ItemType {
   painter_gr: string;
   collectionId: string;
   collectionName: string;
+  type?: "hotspot" | "image" | "video" | "desc";
   painter_en: string;
   material_gr: string;
   material_en: string;
