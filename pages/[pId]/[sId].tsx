@@ -2,12 +2,13 @@ import { CustomLoader } from "@/components/Loader";
 import { useItem, useItems } from "@/lib/items/queries";
 import { useScenes } from "@/lib/scenes/queries";
 import {
+  DeviceOrientationControls,
   Environment,
   OrbitControls,
   PerspectiveCamera,
   useTexture,
 } from "@react-three/drei";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { ClientItem } from "@/components/Item/client";
 import { Modal } from "@/components/Modal";
@@ -43,6 +44,12 @@ export default function Page() {
   const sceneObj = scenes.find((s) => s.id === sId);
   const { data: item } = useItem();
   const desc = item?.description_el ?? item?.description_en;
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator?.userAgent);
+    setIsMobile(isMobile);
+  }, []);
+
   return (
     <div className="  h-screen  w-screen">
       <SceneSelector />
@@ -55,7 +62,11 @@ export default function Page() {
               makeDefault
               position={[0, 0, MIN_DISTANCE]}
             />
-            <OrbitControls makeDefault />
+            {isMobile ? (
+              <DeviceOrientationControls makeDefault />
+            ) : (
+              <OrbitControls makeDefault />
+            )}
             {items.map((item) => (
               <ClientItem key={item.id} {...item} />
             ))}
