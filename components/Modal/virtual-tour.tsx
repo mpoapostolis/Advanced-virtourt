@@ -19,7 +19,7 @@ export function VirtualTourModal() {
         })}
       >
         <div
-          className={clsx("modal-box relative h-fit  w-fit transition", {
+          className={clsx("modal-box relative h-fit   w-fit  transition", {
             "max-w-5xl": ["video"].includes(`${item.type}`),
             "max-w-2xl": !["video"].includes(`${item.type}`),
           })}
@@ -52,19 +52,20 @@ export function VirtualTourModal() {
                 height={1}
               />
             ) : item.type === "video" ? (
-              // <iframe
+              <iframe
+                className="h-[90vh] w-[90vw]  "
+                src={item.popup_video}
+                sandbox="allow-same-origin allow-forms allow-popups allow-scripts allow-presentation"
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            ) : (
+              // <video
               //   className="h-full w-full  "
               //   src={item.popup_video}
-              //   title="YouTube video player"
-              //   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              //   allowFullScreen
-              // ></iframe>
-              <video
-                className="h-full w-full  "
-                src={item.popup_video}
-                controls
-              ></video>
-            ) : (
+              //   controls
+              // ></video>
               <div className="h-fit w-fit text-justify">{desc}</div>
             )}
           </div>

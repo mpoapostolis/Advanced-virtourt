@@ -16,9 +16,7 @@ export async function getItems(req: NextApiRequest, res: NextApiResponse) {
     return {
       ...record,
       src: `${process.env.PB_URL}/api/files/${record.expand.image?.collectionId}/${record.expand.image?.id}/${record.expand.image?.image}`,
-      popup_video:
-        record.popup_video &&
-        `${process.env.PB_URL}/api/files/${record.collectionId}/${record?.id}/${record.popup_video}`,
+
       popup_image:
         record.popup_image &&
         `${process.env.PB_URL}/api/files/${record.collectionId}/${record?.id}/${record.popup_image}`,
@@ -40,9 +38,7 @@ export async function getItemByid(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json({
     ...record,
     src,
-    popup_video:
-      record.popup_video &&
-      `${process.env.PB_URL}/api/files/${record.collectionId}/${record?.id}/${record.popup_video}`,
+
     popup_image:
       record.popup_image &&
       `${process.env.PB_URL}/api/files/${record.collectionId}/${record?.id}/${record.popup_image}`,
