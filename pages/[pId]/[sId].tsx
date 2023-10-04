@@ -2,7 +2,6 @@ import { CustomLoader } from "@/components/Loader";
 import { useItem, useItems } from "@/lib/items/queries";
 import { useScenes } from "@/lib/scenes/queries";
 import {
-  DeviceOrientationControls,
   Environment,
   OrbitControls,
   PerspectiveCamera,
@@ -54,24 +53,31 @@ export default function Page() {
     <div className="  h-screen  w-screen">
       <SceneSelector />
       <div className="relative h-screen w-screen">
-        <Canvas className="pointer-events-none z-20 select-none">
-          <Suspense fallback={<CustomLoader />}>
-            <Scene src={sceneObj?.src ?? "/images/empty.png"} />
-            <PerspectiveCamera
-              fov={70}
-              makeDefault
-              position={[0, 0, MIN_DISTANCE]}
-            />
-            {isMobile ? (
-              <DeviceOrientationControls makeDefault />
-            ) : (
+        {sceneObj?.video ? (
+          <iframe
+            className="h-screen w-screen"
+            src={sceneObj?.video}
+            sandbox="allow-same-origin allow-forms allow-popups allow-scripts allow-presentation"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        ) : (
+          <Canvas className="pointer-events-none z-20 select-none">
+            <Suspense fallback={<CustomLoader />}>
+              <Scene src={sceneObj?.src ?? "/images/empty.png"} />
+              <PerspectiveCamera
+                fov={70}
+                makeDefault
+                position={[0, 0, MIN_DISTANCE]}
+              />
               <OrbitControls makeDefault />
-            )}
-            {items.map((item) => (
-              <ClientItem key={item.id} {...item} />
-            ))}
-          </Suspense>
-        </Canvas>
+              {items.map((item) => (
+                <ClientItem key={item.id} {...item} />
+              ))}
+            </Suspense>
+          </Canvas>
+        )}
         <div
           style={{
             WebkitTextStroke: "0.8px black",
