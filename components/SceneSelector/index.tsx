@@ -10,6 +10,7 @@ export function SceneSelector() {
   const { scene, pId } = router.query;
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLInputElement>(null);
+
   return (
     <div className="drawer pointer-events-none absolute z-50">
       <input
@@ -59,7 +60,9 @@ export function SceneSelector() {
                         }
                       )}
                     >
-                      {s.name}
+                      {router.locale === "en" && s?.en_name
+                        ? s?.en_name
+                        : s.name}
                     </Link>
                   </li>
                 ))}

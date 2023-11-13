@@ -7,4 +7,5 @@ export interface Scene {
   video?: string;
   name: string;
   hideFromMenu?: boolean;
+  en_name?: string;
 }

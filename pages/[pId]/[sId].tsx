@@ -51,6 +51,13 @@ export default function Page() {
 
   const isIerapetra = currProject?.name === "Ierapetra";
 
+  const locale = router.locale ?? "el";
+  const name =
+    locale === "el"
+      ? sceneObj?.name?.split("-")?.at(0)
+      : sceneObj?.en_name
+      ? sceneObj?.en_name?.split("-")?.at(0)
+      : sceneObj?.name;
   return (
     <div className="  h-screen  w-screen">
       <SceneSelector />
@@ -80,13 +87,43 @@ export default function Page() {
             </Suspense>
           </Canvas>
         )}
+        <div className="fixed top-0 right-0 z-50 w-20">
+          <select
+            value={locale}
+            onChange={(evt) => {
+              const locale = evt.currentTarget.value;
+              router.push(
+                {
+                  query: router.query,
+                },
+                undefined,
+                { locale }
+              );
+            }}
+            className="block w-full cursor-pointer appearance-none  bg-transparent px-3 py-4  text-center text-4xl font-bold  text-white outline-none"
+          >
+            <option
+              className=" bg-black text-2xl  uppercase text-white "
+              value="en"
+            >
+              🇬🇧 &nbsp;{" "}
+              {(locale === "el" ? "ΑΓΓΛΙΚΑ" : `English`).toUpperCase()}
+            </option>
+            <option
+              className="bg-black text-2xl  uppercase text-white "
+              value="el"
+            >
+              🇬🇷 &nbsp;{(locale === "el" ? "ΕΛΛΗΝΙΚΑ" : `Greek`).toUpperCase()}
+            </option>
+          </select>
+        </div>
         <div
           style={{
             WebkitTextStroke: "0.8px black",
           }}
           className="pointer-events-none  absolute top-0 z-40 w-screen border-0 stroke-slate-400 text-center text-5xl font-semibold capitalize text-white"
         >
-          {sceneObj?.name?.split("-")?.at(0) ?? "-"}
+          {name ?? "-"}
           {isIerapetra && (
             <picture>
               <img
