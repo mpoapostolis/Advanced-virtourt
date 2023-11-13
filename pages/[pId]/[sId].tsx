@@ -49,6 +49,8 @@ export default function Page() {
     setIsMobile(isMobile);
   }, []);
 
+  const isIerapetra = currProject?.name === "Ierapetra";
+
   return (
     <div className="  h-screen  w-screen">
       <SceneSelector />
@@ -85,6 +87,15 @@ export default function Page() {
           className="pointer-events-none  absolute top-0 z-40 w-screen border-0 stroke-slate-400 text-center text-5xl font-semibold capitalize text-white"
         >
           {sceneObj?.name?.split("-")?.at(0) ?? "-"}
+          {isIerapetra && (
+            <picture>
+              <img
+                className="fixed bottom-4 right-4  w-80"
+                src="/images/espa.jpg"
+                alt="espa"
+              />
+            </picture>
+          )}
         </div>
       </div>
       {isVirtualTour ? <VirtualTourModal /> : <Modal />}
