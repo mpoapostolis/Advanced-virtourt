@@ -8,6 +8,7 @@ export interface ItemType {
   type?: "hotspot" | "image" | "video" | "desc";
   painter_en: string;
   material_gr: string;
+  sound?: string;
   material_en: string;
   flat?: boolean;
   popup_video?: string;

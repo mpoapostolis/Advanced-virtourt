@@ -33,6 +33,7 @@ export const ClientItem = function Item(props: ItemType) {
   return (
     <group
       onClick={() => {
+        if (props.sound) new Audio(props.sound).play();
         if (props.goToScene)
           router.push(`/${router.query.pId}/${props.goToScene}`);
         else
