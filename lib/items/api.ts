@@ -17,6 +17,7 @@ export async function getItems(req: NextApiRequest, res: NextApiResponse) {
       ...record,
       src: `${process.env.PB_URL}/api/files/${record.expand.image?.collectionId}/${record.expand.image?.id}/${record.expand.image?.image}`,
       sound: `${process.env.PB_URL}/api/files/${record.collectionId}/${record?.id}/${record.sound}`,
+      sound_en: `${process.env.PB_URL}/api/files/${record.collectionId}/${record?.id}/${record.sound_en}`,
       popup_image:
         record.popup_image &&
         `${process.env.PB_URL}/api/files/${record.collectionId}/${record?.id}/${record.popup_image}`,

@@ -9,6 +9,7 @@ export interface ItemType {
   painter_en: string;
   material_gr: string;
   sound?: string;
+  sound_en?: string;
   material_en: string;
   flat?: boolean;
   popup_video?: string;

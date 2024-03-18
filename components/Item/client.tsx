@@ -24,6 +24,7 @@ export const ClientItem = function Item(props: ItemType) {
   const descScale = 1 / props.scale;
 
   const locale = router.locale ?? "el";
+  const sound = locale === "el" ? props.sound : props.sound_en;
   const title = locale === "el" ? props.title_gr : props.title_en;
   const painter =
     locale === "el"
@@ -33,7 +34,7 @@ export const ClientItem = function Item(props: ItemType) {
   return (
     <group
       onClick={() => {
-        if (props.sound) new Audio(props.sound).play();
+        if (props.sound || props.sound_en) new Audio(sound).play();
         if (props.goToScene)
           router.push(`/${router.query.pId}/${props.goToScene}`);
         else
