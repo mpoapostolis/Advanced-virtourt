@@ -128,7 +128,7 @@ export default function Page() {
             <picture>
               <img
                 className="fixed bottom-4 right-4  w-80"
-                src="/images/espa.jpg"
+                src=  {isIerapetra ? '/images/espa-2027.jpg': "/images/espa.jpg"}
                 alt="espa"
               />
             </picture>
