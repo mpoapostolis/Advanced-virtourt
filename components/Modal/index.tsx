@@ -64,7 +64,12 @@ export function Modal() {
               />
             ) : (
               <div className="h-fit w-fit text-justify">
-                {item?.expand?.painter?.biography_gr}
+                {
+locale === "el"
+
+item?.expand?.painter?.biography_gr:
+item?.expand?.painter?.biography_en
+}
               </div>
             )}
           </div>
